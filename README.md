@@ -19,7 +19,9 @@ No signup. Guest progress is saved in your browser.
 | Roadmap `/path/[adapt\|pivot\|reinvent]` | Personal 14-day plan generated from weighted gaps + weekly time; switching paths changes gaps and modules; module steps, notes, completion; Blueprint/Plus locks; week 2 time-gated |
 | Flagship challenge `/challenge/cs-portfolio` | Customer Support → Customer Success: prioritize a 5-account portfolio, cite evidence, diagnose risk, choose an action, write the message → rubric score → 3-minute lesson + quick check → different portfolio → before/after comparison → Career Proof |
 | Other exercises | `/challenge/ai-draft-review` (Adapt), `/challenge/ops-volume` (Reinvent) single scored skill checks; `/challenge/cs-sprint` week-2 Skill Sprint (Plus) |
-| Dashboard `/dashboard` | Weekly mission, "Continue my plan", before/after results, Skills Snapshot, next skill, labeled **Demo: advance to next week**, local activity log, **Reset my demo data** |
+| Dashboard `/dashboard` | Weekly mission, "Continue my plan", **Career Radar** (curated, dated editorial signals per path, linked to your gaps and to practice; 1 free, rest Plus), before/after results, Skills Snapshot, next skill, labeled **Demo: advance to next week**, local activity log, **Reset my demo data** |
+| Loop after practice | "Your profile updated" on every result: measured skill before → after, the path gap that moved, and a deep link to the next plan session |
+| Career Proof `/proof` | Printable before/after summary (Save as PDF) + "Copy share text" (neutral, states it's not a certificate) |
 | Pricing `/pricing` | Free $0 · Blueprint $24.99 one-time · Plus $9.99/month (price hypotheses). Inline paywalls. Labeled **Preview full program (judge demo)**. No payment provider is connected, so there is no fake checkout |
 | Report `/report` | Blueprint summary, printable / Save as PDF |
 | Method `/method` | Formulas, rubric, provenance, data handling, limitations |
@@ -74,16 +76,17 @@ tests/                 unit tests
 
 ## Reviewer quick path (~5 minutes)
 
-1. Open the site → **Try a sample journey** (or answer with your own inputs).
-2. Choose **Pivot** → **Start** the flagship challenge → baseline → lesson → new portfolio → compare.
+1. Open the site → **Try a sample journey** (the fictional sample is recommended **Pivot** by the engine) or answer with your own inputs.
+2. Choose **Pivot** → **Start** the flagship challenge → baseline → lesson → new portfolio → compare → see **Your profile updated**.
 3. Redo with different answers: scores change.
-4. **My plan** → **Demo: advance to next week** to see the weekly return loop.
+4. **My plan** → **Career Radar**, then **Demo: advance to next week** to see the weekly return loop.
 5. **Pricing** → **Preview full program (judge demo)** → Skill Sprint and Blueprint report unlock.
 
 ## Browser walkthrough (optional)
 
-`scripts/e2e-journey.cjs` drives the full journey with Playwright (sample + custom inputs, challenge before/after, retry with
-different answers, refresh persistence, paywall, demo week advance, demo preview, mobile overflow checks, reset):
+`scripts/e2e-journey.cjs` drives the full journey with Playwright (sample → Pivot, custom inputs, challenge before/after,
+profile update + next step, Career Proof print/copy, Career Radar on all three paths, retry with different answers, refresh
+persistence, paywall, demo week advance, demo preview, mobile overflow checks, reset):
 
 ```bash
 npm run build && npm start

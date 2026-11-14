@@ -18,6 +18,7 @@ export const PLANS = {
       "Three paths with skill overlap, gaps and effort",
       "First practice challenge on every path, with before/after on Pivot",
       "Week 1 starter session and weekly reviews",
+      "Career Radar preview: 1 signal for your path",
     ],
   },
   blueprint: {
@@ -37,9 +38,9 @@ export const PLANS = {
     cadence: "per month",
     features: [
       "Everything in the Blueprint (no separate purchase needed)",
+      "Career Radar: every curated signal for your path, linked to practice and updated with the catalog",
       "Weekly Skill Sprints: new simulations each week",
       "Ongoing saved progress and skill evidence",
-      "Skills Snapshot updates as the catalog is revised",
     ],
   },
 } as const;
@@ -56,7 +57,7 @@ export function PaywallCard({ tier, context, className }: { tier: "blueprint" | 
         <span className="flex size-9 shrink-0 items-center justify-center rounded-xl bg-brand/30">
           <Lock className="size-4 text-soft" aria-hidden />
         </span>
-        <div className="min-w-0 flex-1">
+        <div className="min-w-0 flex-1 break-words">
           <p className="font-semibold">
             Included in {plan.name}: {plan.price}
             {plan.cadence && <span className="font-normal text-muted"> {plan.cadence}</span>}
@@ -70,7 +71,7 @@ export function PaywallCard({ tier, context, className }: { tier: "blueprint" | 
             <ButtonLink href="/pricing" size="sm" variant="secondary">
               Compare plans
             </ButtonLink>
-            <Button size="sm" variant="outline" onClick={() => setDemoPreview(true)}>
+            <Button size="sm" variant="outline" className="h-auto min-h-9 whitespace-normal py-1.5 text-left" onClick={() => setDemoPreview(true)}>
               <Sparkles className="size-3.5" aria-hidden /> Preview full program (judge demo)
             </Button>
           </div>

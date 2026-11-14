@@ -28,7 +28,7 @@ async function fillPortfolio(page, { account, signals, risk, action, message }) 
 
 (async () => {
   const browser = await chromium.launch();
-  const ctx = await browser.newContext({ viewport: { width: 1440, height: 900 } });
+  const ctx = await browser.newContext({ viewport: { width: 1440, height: 900 }, permissions: ["clipboard-read", "clipboard-write"] });
   const page = await ctx.newPage();
   page.on("pageerror", (e) => errors.push("pageerror: " + e.message));
   page.on("console", (m) => m.type() === "error" && errors.push("console: " + m.text()));
@@ -37,6 +37,9 @@ async function fillPortfolio(page, { account, signals, risk, action, message }) 
   await page.goto(BASE + "/");
   await page.getByRole("heading", { level: 1 }).waitFor();
   await page.screenshot({ path: `${SHOTS}/01-landing.png` });
+  if ((await page.locator("#path-preview-panel").getByText("Best fit").count()) !== 1) errors.push("landing preview: Pivot tab is not marked Best fit");
+  await page.getByText("Continuous Adaptation Loop", { exact: true }).first().waitFor();
+  log("landing: Pivot preview marked Best fit; adaptation loop visible");
   await page.getByRole("tab", { name: "Reinvent" }).click();
   log("landing ok; preview tab switch:", await page.locator("#path-preview-panel .font-display").first().textContent());
 
@@ -46,6 +49,7 @@ async function fillPortfolio(page, { account, signals, risk, action, message }) 
   await page.getByText("Recommended for you").waitFor();
   const rec = await page.locator("text=Recommended for you >> xpath=following-sibling::p[1]").textContent();
   log("sample recommended:", rec);
+  if (!/^Pivot – Customer Success Specialist/.test(rec)) errors.push(`sample journey should recommend Pivot, got "${rec}"`);
   await page.screenshot({ path: `${SHOTS}/02-results.png`, fullPage: true });
 
   // 4. Path switch on results skill comparison changes gaps
@@ -121,6 +125,41 @@ async function fillPortfolio(page, { account, signals, risk, action, message }) 
   await page.getByText("Before → After").waitFor();
   const headline = await page.locator("h2").first().textContent();
   log("comparison headline:", headline);
+  const pu = page.getByRole("region", { name: "Your profile updated" });
+  await page.getByRole("heading", { name: "Your profile updated" }).waitFor();
+  const puText = await pu.innerText();
+  if (!/Gap for Customer Success Specialist/.test(puText)) errors.push("profile update: no gap line");
+  if (!/measured \d\.\d/.test(puText)) errors.push("profile update: no measured value");
+  const nextLink = page.getByRole("link", { name: /^Continue: day \d+/ });
+  log("profile updated block:", puText.split("\n").filter((l) => /→|Gap|Biggest/.test(l)).slice(0, 4).join(" | "));
+  log("next plan step button:", (await nextLink.textContent()).trim());
+  await page.getByRole("button", { name: "Copy share text" }).click();
+  await page.getByText("Copied to your clipboard.").waitFor();
+  const clip = await page.evaluate(() => navigator.clipboard.readText());
+  if (!clip.includes("not a certificate")) errors.push("share text missing disclaimer");
+  log("copy share text → Copied; clipboard starts:", JSON.stringify(clip.split("\n")[1]));
+  await page.getByRole("link", { name: /Download \/ Print/ }).click();
+  await page.waitForURL("**/proof");
+  await page.getByRole("heading", { name: /practice challenge/ }).waitFor();
+  await page.getByRole("button", { name: /Print \/ Save as PDF/ }).waitFor();
+  log("Download / Print → /proof printable page");
+  await page.screenshot({ path: `${SHOTS}/06b-proof.png`, fullPage: true });
+  await page.goto(BASE + "/challenge/cs-portfolio");
+  await page.getByText("Before → After").waitFor();
+  await nextLink.click();
+  await page.waitForURL((u) => !u.pathname.startsWith("/challenge/cs-portfolio"));
+  const landed = new URL(page.url());
+  log("next-step button navigates to:", landed.pathname + landed.hash);
+  if (landed.hash) {
+    const row = page.locator(landed.hash);
+    try {
+      await row.getByRole("button", { name: /Mark as done/ }).waitFor({ timeout: 5000 });
+      log("deep-linked plan session is open with 'Mark as done'");
+    } catch {
+      errors.push("deep-linked plan session did not open");
+    }
+  }
+  await page.goto(BASE + "/challenge/cs-portfolio");
   await page.screenshot({ path: `${SHOTS}/06-comparison.png`, fullPage: true });
 
   // 7. Refresh persists
@@ -136,6 +175,14 @@ async function fillPortfolio(page, { account, signals, risk, action, message }) 
   // Dashboard + return loop
   await page.goto(BASE + "/dashboard");
   await page.getByText("Week 1 mission").waitFor();
+  await page.locator("#radar").waitFor();
+  const freeCards = await page.locator("#radar h3").count();
+  if (freeCards !== 1) errors.push(`radar free tier should show 1 signal, got ${freeCards}`);
+  await page.locator("#radar").getByText("Included in PIVOTREADY Plus").waitFor();
+  await page.locator("#radar").getByText(/Editorial, not live labor-market data, not a job-loss forecast/).waitFor();
+  const measured = await page.locator("tr", { hasText: "Customer health analysis" }).last().locator("td").nth(2).innerText();
+  if (!/\d(\.\d)?\/4/.test(measured)) errors.push(`dashboard Measured column empty after challenge: "${measured}"`);
+  log(`dashboard radar: ${freeCards} free signal + Plus paywall; Measured(health)=${measured}`);
   await page.screenshot({ path: `${SHOTS}/07-dashboard.png`, fullPage: true });
   await page.getByRole("button", { name: /Demo: advance to next week/ }).click();
   await page.getByText("Week 2 mission").waitFor();
@@ -147,6 +194,15 @@ async function fillPortfolio(page, { account, signals, risk, action, message }) 
   await page.getByRole("button", { name: /Preview full program \(judge demo\)/ }).click();
   await page.getByText("DEMO PREVIEW", { exact: true }).waitFor();
   log("demo preview banner shown");
+  await page.goto(BASE + "/dashboard");
+  await page.locator("#radar").waitFor();
+  const allCards = await page.locator("#radar h3").count();
+  if (allCards !== 5) errors.push(`radar with preview should show 5 pivot signals, got ${allCards}`);
+  const cta = page.locator("#radar").getByRole("link").filter({ hasText: /Start|Open/ }).first();
+  const ctaLabel = (await cta.textContent()).trim();
+  await cta.click();
+  await page.waitForURL((u) => !u.pathname.startsWith("/dashboard"));
+  log(`radar unlocked by demo preview: ${allCards} signals; first CTA "${ctaLabel}" → ${new URL(page.url()).pathname}`);
   await page.goto(BASE + "/challenge/cs-sprint");
   await page.getByText("1. Which account do you contact first?").waitFor();
   log("sprint unlocked in week 2 with preview");
@@ -215,6 +271,13 @@ async function fillPortfolio(page, { account, signals, risk, action, message }) 
   if (rec2 === rec) errors.push("custom result same as sample");
   log("custom notice:", await p2.getByText("Limited analysis for custom roles").count());
   await p2.screenshot({ path: `${SHOTS}/11-results-custom.png`, fullPage: true });
+  await p2.getByRole("button", { name: /Choose Reinvent/ }).click();
+  await p2.waitForURL("**/path/reinvent");
+  await p2.goto(BASE + "/dashboard");
+  await p2.locator("#radar").waitFor();
+  const reinventRadar = await p2.locator("#radar h3").allTextContents();
+  log("reinvent radar (free):", reinventRadar);
+  if (reinventRadar.length !== 1) errors.push("reinvent radar free count != 1");
 
   // 10. Mobile
   const m = await browser.newContext({ viewport: { width: 375, height: 812 }, deviceScaleFactor: 1 });
@@ -244,6 +307,15 @@ async function fillPortfolio(page, { account, signals, risk, action, message }) 
   await mp.waitForTimeout(300);
   await overflow(mp, "/dashboard");
   await mp.screenshot({ path: `${SHOTS}/m-dashboard.png`, fullPage: true });
+  await mp.goto(BASE + "/path/adapt");
+  await mp.getByRole("button", { name: "Make Adapt my path" }).click();
+  await mp.goto(BASE + "/dashboard");
+  await mp.locator("#radar").waitFor();
+  const adaptRadar = await mp.locator("#radar h3").allTextContents();
+  log("adapt radar on mobile (free):", adaptRadar);
+  if (adaptRadar.length !== 1) errors.push("adapt radar free count != 1");
+  await overflow(mp, "/dashboard (adapt + radar)");
+  await mp.locator("#radar").screenshot({ path: `${SHOTS}/m-radar.png` });
   await mp.getByRole("button", { name: "Open menu" }).click();
   await mp.getByRole("navigation", { name: "Mobile" }).waitFor();
   log("mobile menu opens");
@@ -253,7 +325,12 @@ async function fillPortfolio(page, { account, signals, risk, action, message }) 
   await mp.getByRole("button", { name: /Reset my demo data/ }).click();
   await mp.getByRole("button", { name: "Yes, reset" }).click();
   await mp.getByText("Your plan starts with a free career check").waitFor();
-  log("reset works");
+  const stored = await mp.evaluate(() => JSON.parse(localStorage.getItem("pivotready:state") || "{}"));
+  if (stored.assessment || (stored.attempts && stored.attempts.length) || stored.plan || stored.demoPreview)
+    errors.push("reset left data behind: " + JSON.stringify(stored).slice(0, 200));
+  await mp.goto(BASE + "/results");
+  await mp.getByText("Start with your free career check").waitFor();
+  log("reset clears assessment, plan, attempts and preview");
 
   await browser.close();
   console.log("\nERRORS:", errors.length ? errors : "none");

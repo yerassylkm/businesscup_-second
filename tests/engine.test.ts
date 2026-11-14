@@ -52,6 +52,20 @@ describe("custom task mapping", () => {
   });
 });
 
+describe("sample persona", () => {
+  it("is recommended Pivot by the engine (computed, not hardcoded)", () => {
+    const r = results(SAMPLE_ASSESSMENT);
+    expect(r.recommended).toBe("pivot");
+    const fit = (id: string) => r.evaluations.find((e) => e.pathId === id)!.fit;
+    expect(fit("pivot")).toBeGreaterThan(fit("adapt"));
+    expect(fit("pivot")).toBeGreaterThan(fit("reinvent"));
+  });
+  it("gets a different recommendation when only the goal changes", () => {
+    expect(results({ ...SAMPLE_ASSESSMENT, goal: "help_me_choose" }).recommended).toBe("adapt");
+    expect(results({ ...SAMPLE_ASSESSMENT, goal: "reinvent", concern: "new_field" }).recommended).not.toBe("pivot");
+  });
+});
+
 describe("skill profile & paths", () => {
   it("keeps self-reported, inferred and demonstrated evidence separate", () => {
     const p = computeSkillProfile(base);

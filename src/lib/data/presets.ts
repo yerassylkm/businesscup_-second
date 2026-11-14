@@ -7,7 +7,8 @@ import type { AssessmentInput } from "@/types";
  */
 export const SAMPLE_PERSONA = {
   name: "Sarah (fictional sample)",
-  blurb: "34, Customer Support Specialist for 8 years, has 3–5 hours a week, worried about AI changing her tasks.",
+  blurb:
+    "34, Customer Support Specialist for 8 years, has 3–5 hours a week. Worried that AI is automating her repetitive tasks, she wants to grow beyond reactive support into a related role.",
 };
 
 export const SAMPLE_ASSESSMENT: AssessmentInput = {
@@ -28,7 +29,9 @@ export const SAMPLE_ASSESSMENT: AssessmentInput = {
     prioritization: 2,
     stakeholder_communication: 2,
   },
-  goal: "help_me_choose",
+  // Goal: move into a related role (Pivot). The recommendation is still computed
+  // by the engine from these inputs. Nothing about the result is hardcoded.
+  goal: "pivot",
   weeklyTime: "3to5",
   budget: "under25",
   incomePreference: "keep_level",

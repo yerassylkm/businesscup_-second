@@ -2,7 +2,7 @@
 
 import { computeSkillProfile } from "@/lib/engine/profile";
 import { evaluatePath } from "@/lib/engine/paths";
-import { generatePlan } from "@/lib/engine/plan";
+import { generatePlan, type PlanItem } from "@/lib/engine/plan";
 import { DAY_MS } from "@/lib/utils";
 import type { AssessmentInput, ChallengeAttempt, PathId } from "@/types";
 import type { AppState } from "./schema";
@@ -106,4 +106,23 @@ export function setDemoPreview(on: boolean) {
 
 export function hasAccess(state: AppState, access: "free" | "blueprint" | "plus") {
   return access === "free" || state.demoPreview;
+}
+
+/** Where a plan item lives: its challenge page, or its row on the roadmap. */
+export function planItemHref(item: PlanItem, pathId: string) {
+  return item.href ?? `/path/${pathId}#${item.id}`;
+}
+
+/**
+ * Next plan step the user can actually do now: in an open week, accessible on
+ * their tier, not yet completed. Null if everything open is done or locked.
+ */
+export function nextPlanItem(state: AppState, real = Date.now()): PlanItem | null {
+  if (!state.plan) return null;
+  const week = currentPlanWeek(state, real);
+  return (
+    (state.plan.items as PlanItem[]).find(
+      (i) => i.week <= week && hasAccess(state, i.access) && !state.completedItems[i.id],
+    ) ?? null
+  );
 }

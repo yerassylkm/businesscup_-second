@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { ArrowRight, Check, ChevronDown, Clock, FastForward, Lock, PlayCircle } from "lucide-react";
 import { PATH_STYLE, PathGlyph } from "@/components/brand";
 import { Badge, Button, ButtonLink, Card, Container, Notice, ProgressBar, SectionTitle } from "@/components/ui";
@@ -269,7 +269,24 @@ function PlanItemRow({
   timeLocked: boolean;
   planStart: number | null;
 }) {
+  // Deep links like /path/pivot#<item id> open and scroll to that session.
   const [open, setOpen] = useState(false);
+  const rowRef = useRef<HTMLLIElement>(null);
+  useEffect(() => {
+    const openIfTargeted = () => {
+      if (window.location.hash !== `#${item.id}`) return;
+      setOpen(true);
+      rowRef.current?.scrollIntoView({ block: "center" });
+    };
+    // Client-side navigation can update the URL hash just after this row mounts.
+    openIfTargeted();
+    const t = window.setTimeout(openIfTargeted, 50);
+    window.addEventListener("hashchange", openIfTargeted);
+    return () => {
+      window.clearTimeout(t);
+      window.removeEventListener("hashchange", openIfTargeted);
+    };
+  }, [item.id]);
   const [note, setNote] = useState(state.completedItems[item.id]?.note ?? "");
   const done = Boolean(state.completedItems[item.id]);
   const paid = !hasAccess(state, item.access);
@@ -278,7 +295,7 @@ function PlanItemRow({
   const expandable = item.kind === "module" || item.kind === "review" || paid;
 
   return (
-    <li>
+    <li id={item.id} ref={rowRef} className="scroll-mt-24">
       <div className={cn("surface rounded-2xl transition-colors", done && "border-mint/30", timeLocked && "opacity-60")}>
         <div className="flex items-center gap-3 p-4">
           <div

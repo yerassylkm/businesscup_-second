@@ -41,6 +41,8 @@ The correct answers to the portfolio challenges are **not stored**: they are der
   `fit = 0.5·overlap + 0.2·goal + 0.15·concern + 0.15·feasibility − 0.05 (Reinvent ∧ keep income)`; every factor is returned for the "Why this score?" UI.
 - **plan.ts**: 14-day plan. Weekly time → sessions/week (3–6) and minutes. Day 1 = path challenge; Pivot's last session = Plus sprint; days 7/14 = reviews; remaining sessions allocated across gaps by weighted gap (largest remainder, top-3 coverage), modules interleaved learn → practice → apply. Access tags: free (challenge, reviews, first module of each week), blueprint, plus.
 - **portfolio.ts**: risk points from usage trend, renewal timing, sponsor change, sentiment, seat utilization and NPS; `priority = risk × √(ARR/10k)`. Rubric: prioritization 35 (rank), evidence 25 (true signals − ½ per unsupported/noise), risk 20 (primary/secondary), action 12 (fit to primary risk) + message 8 (documented keyword heuristic, ≥12 words).
+- **radar.ts** (+ `lib/data/radar.ts`): Career Radar. Curated, dated editorial signals per path (no statistics; enforced by a unit test), each linked to a skill and a real page; `buildRadar` attaches the user's computed gap for that skill and free/Plus access (first signal free).
+- **progress.ts**: "Your profile updated": recomputes the profile and path gaps without and with a given attempt (same engine), so the UI can show measured before → after and which gaps shrank or grew.
 - **exercises.ts**: rubric scoring for the AI draft review and the ops volume analysis (hours = volume × minutes × standard share ÷ 60).
 
 All engine functions are pure and unit-tested (`tests/`).

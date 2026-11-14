@@ -3,6 +3,14 @@ import { Card, Container, Notice, SectionTitle } from "@/components/ui";
 import { FIT_WEIGHTS } from "@/lib/engine/paths";
 import { RUBRIC } from "@/lib/engine/portfolio";
 import { PROVENANCE } from "@/lib/data/sources";
+import { RADAR_AS_OF, RADAR_BY_PATH, RADAR_SIGNALS, RADAR_VERSION } from "@/lib/data/radar";
+import { AdaptationLoop } from "@/components/adaptation-loop";
+
+const RADAR_SIGNAL_COUNT = Object.keys(RADAR_SIGNALS).length;
+const RADAR_PER_PATH = (() => {
+  const counts = Object.values(RADAR_BY_PATH).map((ids) => ids.length);
+  return `${Math.min(...counts)}–${Math.max(...counts)}`;
+})();
 import { ROLES } from "@/lib/data/roles";
 import { SKILLS } from "@/lib/data/skills";
 
@@ -23,6 +31,7 @@ export default function MethodPage() {
       />
 
       <div className="mt-10 space-y-6">
+        <AdaptationLoop />
         <Card>
           <h2 className="font-display text-xl font-bold">1. Three kinds of skill evidence</h2>
           <ul className="mt-3 space-y-2 text-sm leading-relaxed text-muted">
@@ -118,8 +127,24 @@ export default function MethodPage() {
           </ul>
         </Card>
 
+        <Card id="radar" className="scroll-mt-24">
+          <h2 className="font-display text-xl font-bold">5. Career Radar</h2>
+          <p className="mt-3 text-sm leading-relaxed text-muted">
+            The Career Radar on <strong className="text-ink">My plan</strong> shows {RADAR_SIGNAL_COUNT} curated signals ({RADAR_PER_PATH} per
+            path) about how work around your chosen path is changing. Each signal has an as-of date, what&apos;s changing, what it means
+            for your plan, the skill it relates to, and a link to practice it. We also show your own computed gap for that skill, from the
+            same engine as your career map.
+          </p>
+          <p className="mt-3 text-sm leading-relaxed text-muted">
+            Signals are <strong className="text-ink">editorial statements</strong> written for catalog {RADAR_VERSION} (as of{" "}
+            {RADAR_AS_OF}). They contain no statistics, percentages, salaries or forecasts, are not live labor-market data, and are not a
+            job-loss forecast. Free users see one signal for their path; PIVOTREADY Plus shows all of them and gets them as the catalog is
+            updated.
+          </p>
+        </Card>
+
         <Card>
-          <h2 className="font-display text-xl font-bold">5. Data sources & provenance</h2>
+          <h2 className="font-display text-xl font-bold">6. Data sources & provenance</h2>
           <p className="mt-3 text-sm leading-relaxed text-muted">
             <strong className="text-ink">
               {PROVENANCE.catalog.label} {PROVENANCE.catalog.version} (as of {PROVENANCE.catalog.asOf}).
@@ -143,7 +168,7 @@ export default function MethodPage() {
         </Card>
 
         <Card>
-          <h2 className="font-display text-xl font-bold">6. Your data</h2>
+          <h2 className="font-display text-xl font-bold">7. Your data</h2>
           <p className="mt-3 text-sm leading-relaxed text-muted">
             Guest mode stores your answers, plan, attempts and a small local activity log in your browser&apos;s localStorage (versioned,
             validated on load). Nothing is sent to a server, and no analytics service is connected. We never ask for your name, email,

@@ -91,7 +91,7 @@ function Results({ results, selected }: { results: CareerResults; selected: Path
             <div>
               <p className="text-sm font-semibold text-lavender">Recommended for you</p>
               <p className="font-display text-2xl font-bold sm:text-3xl">
-                {PATH_BY_ID[recommended].name}: {rec.roleTitle}
+                {PATH_BY_ID[recommended].name} – {rec.roleTitle}
               </p>
               <p className="mt-1 max-w-2xl text-sm text-muted">
                 Highest path fit ({pct(rec.fit)}) from your skill overlap ({pct(rec.overlap)}), stated goal, main concern and weekly

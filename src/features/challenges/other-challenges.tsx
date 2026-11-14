@@ -13,6 +13,7 @@ import { useAppState } from "@/lib/storage/store";
 import { cn, formatDate, formatDateTime } from "@/lib/utils";
 import type { ChallengeAttempt, PathId, PortfolioAnswer, ScoreResult } from "@/types";
 import { Err, PortfolioForm, Radio } from "./portfolio-form";
+import { ProfileUpdateCard } from "./profile-update";
 import { ScoreReport } from "./score-report";
 
 function lastAttempt(attempts: ChallengeAttempt[], challengeId: string) {
@@ -119,7 +120,10 @@ export function SprintChallenge() {
           />
         ) : (
           <div className="grid gap-6 lg:grid-cols-[1.4fr_1fr]">
-            <ScoreReport title={`Sprint · ${SCENARIO_SPRINT.title}`} total={result.total} max={100} dimensions={result.dimensions} portfolio={{ result, scenario: SCENARIO_SPRINT }} />
+            <div className="space-y-6">
+              <ScoreReport title={`Sprint · ${SCENARIO_SPRINT.title}`} total={result.total} max={100} dimensions={result.dimensions} portfolio={{ result, scenario: SCENARIO_SPRINT }} />
+              {attempt && <ProfileUpdateCard attempt={attempt} pathId="pivot" />}
+            </div>
             <div className="space-y-4">
               <Card>
                 <p className="font-display text-lg font-bold">Sprint complete</p>
@@ -417,9 +421,13 @@ function ExerciseResult({
   onRetry: () => void;
   pathId: PathId;
 }) {
+  const latestAttempt = [...attempts].sort((a, b) => b.at - a.at)[0];
   return (
     <div className="grid gap-6 lg:grid-cols-[1.4fr_1fr]">
-      <ScoreReport title={title} total={result.total} max={result.max} dimensions={result.dimensions} />
+      <div className="space-y-6">
+        <ScoreReport title={title} total={result.total} max={result.max} dimensions={result.dimensions} />
+        {latestAttempt && <ProfileUpdateCard attempt={latestAttempt} pathId={pathId} />}
+      </div>
       <div className="space-y-4">
         <Card>
           <p className="font-display text-lg font-bold">

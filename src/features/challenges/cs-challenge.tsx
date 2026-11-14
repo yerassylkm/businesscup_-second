@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useMemo, useState } from "react";
-import { ArrowRight, BookOpen, Check, ClipboardCopy, RotateCcw, TrendingDown, TrendingUp, Minus } from "lucide-react";
+import { ArrowRight, BookOpen, Check, Printer, RotateCcw, TrendingDown, TrendingUp, Minus } from "lucide-react";
 import { Badge, Button, ButtonLink, Card, Container, Notice, ScoreRing } from "@/components/ui";
 import { CS_LESSON } from "@/lib/data/lessons";
 import { SCENARIO_BASELINE, SCENARIO_TRANSFER } from "@/lib/data/scenarios";
@@ -13,7 +13,10 @@ import { useAppState } from "@/lib/storage/store";
 import { cn, formatDate, formatDateTime } from "@/lib/utils";
 import type { ChallengeAttempt, PortfolioAnswer, SkillId } from "@/types";
 import { PortfolioForm, Radio } from "./portfolio-form";
+import { careerProofShareText } from "./career-proof";
+import { ProfileUpdateCard } from "./profile-update";
 import { ScoreReport } from "./score-report";
+import { CopyShareTextButton } from "./share-button";
 
 const CHALLENGE_ID = "cs-portfolio";
 type Stage = "intro" | "baseline" | "baseline_result" | "lesson" | "transfer" | "comparison";
@@ -204,6 +207,7 @@ export function CustomerSuccessChallenge() {
             beforeAt={baseline.at}
             afterAt={transfer.at}
             attempts={state.attempts.filter((a) => a.challengeId === CHALLENGE_ID)}
+            transferAttempt={transfer}
             onRedoTransfer={() => {
               setFormKey((k) => k + 1);
               go("transfer");
@@ -299,6 +303,7 @@ function Comparison({
   beforeAt,
   afterAt,
   attempts,
+  transferAttempt,
   onRedoTransfer,
   onRedoBaseline,
 }: {
@@ -307,11 +312,11 @@ function Comparison({
   beforeAt: number;
   afterAt: number;
   attempts: ChallengeAttempt[];
+  transferAttempt: ChallengeAttempt;
   onRedoTransfer: () => void;
   onRedoBaseline: () => void;
 }) {
   const state = useAppState();
-  const [copied, setCopied] = useState(false);
   const delta = after.total - before.total;
   const weakest = [...after.dimensions].sort((a, b) => a.points / a.max - b.points / b.max)[0];
   const sprintAccess = hasAccess(state, "plus");
@@ -330,12 +335,7 @@ function Comparison({
       : `That's useful information, not a failure. Your weakest area this time was ${weakest.label.toLowerCase()}: ${weakest.feedback}`;
 
   const skills = Object.entries(after.skillEvidence) as [SkillId, number][];
-  const summary = [
-    "PIVOTREADY Career Proof (training exercise, not a qualification)",
-    `Customer Support → Customer Success challenge`,
-    `Before: ${before.total}/100 (${formatDate(beforeAt)}) · After, on a new portfolio: ${after.total}/100 (${formatDate(afterAt)})`,
-    `Skills practiced: ${skills.map(([s]) => SKILL_BY_ID[s].name).join(", ")}`,
-  ].join("\n");
+  const shareText = careerProofShareText(before.total, beforeAt, after.total, afterAt, skills.map(([s]) => s));
 
   return (
     <div className="space-y-6">
@@ -363,6 +363,8 @@ function Comparison({
           </div>
         </div>
       </Card>
+
+      <ProfileUpdateCard attempt={transferAttempt} pathId="pivot" />
 
       <div className="grid gap-6 lg:grid-cols-[1.3fr_1fr]">
         <Card>
@@ -442,16 +444,12 @@ function Comparison({
                 </li>
               ))}
           </ul>
-          <Button
-            variant="outline"
-            size="sm"
-            className="mt-4"
-            onClick={() => {
-              navigator.clipboard?.writeText(summary).then(() => setCopied(true), () => setCopied(false));
-            }}
-          >
-            <ClipboardCopy className="size-3.5" aria-hidden /> {copied ? "Copied" : "Copy a shareable summary"}
-          </Button>
+          <div className="no-print mt-4 flex flex-wrap items-start gap-2">
+            <ButtonLink href="/proof" variant="secondary" size="sm">
+              <Printer className="size-3.5" aria-hidden /> Download / Print
+            </ButtonLink>
+            <CopyShareTextButton text={shareText} />
+          </div>
           <p className="mt-3 text-xs leading-relaxed text-faint">
             A training exercise, not an accredited certificate or an employment qualification.
           </p>

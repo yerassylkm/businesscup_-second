@@ -6,6 +6,7 @@ import { ArrowRight, CalendarDays, Check, Clock, Database, FastForward, Lock, Ro
 import { PathGlyph } from "@/components/brand";
 import { Badge, Button, ButtonLink, Card, Container, Notice, ProgressBar, SectionTitle } from "@/components/ui";
 import { NoAssessment } from "@/features/careers/no-assessment";
+import { CareerRadar } from "./career-radar";
 import { PATH_BY_ID } from "@/lib/data/paths";
 import { ROLE_BY_ID } from "@/lib/data/roles";
 import { SKILL_BY_ID } from "@/lib/data/skills";
@@ -17,7 +18,9 @@ import {
   currentPlanWeek,
   effectiveNow,
   hasAccess,
+  nextPlanItem,
   nextWeekUnlockAt,
+  planItemHref,
   resetDemoTime,
 } from "@/lib/storage/actions";
 import { useCareerResults } from "@/lib/storage/derived";
@@ -80,12 +83,11 @@ function PlanDashboard({ state, results }: { state: AppState; results: NonNullab
   const unlockAt = nextWeekUnlockAt(state);
   const now = effectiveNow(state);
 
-  const isOpen = (i: PlanItem) => i.week <= week;
   const weekItems = items.filter((i) => i.week === viewWeek);
   const weekDone = weekItems.filter((i) => state.completedItems[i.id]).length;
   const allDone = items.filter((i) => state.completedItems[i.id]).length;
-  const next = items.find((i) => isOpen(i) && hasAccess(state, i.access) && !state.completedItems[i.id]);
-  const nextHref = next?.href ?? `/path/${pathId}`;
+  const next = nextPlanItem(state);
+  const nextHref = next ? planItemHref(next, pathId) : `/path/${pathId}`;
   const upcoming = items.filter((i) => i.week === 2);
 
   const attemptsByChallenge = useMemo(() => {
@@ -197,6 +199,8 @@ function PlanDashboard({ state, results }: { state: AppState; results: NonNullab
           </div>
         </Card>
       </div>
+
+      <CareerRadar state={state} pathId={pathId} evaluation={evaluation} />
 
       {/* Before / after */}
       <section className="mt-12">

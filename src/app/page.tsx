@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { ArrowRight, Check, ClipboardList, FlaskConical, Map, Repeat } from "lucide-react";
+import { AdaptationLoop } from "@/components/adaptation-loop";
 import { PathGlyph } from "@/components/brand";
 import { Badge, ButtonLink, Card, Container, Eyebrow, SectionTitle } from "@/components/ui";
 import { LandingCtas, PathPreview, TrustList } from "@/features/landing/landing";
@@ -91,6 +92,7 @@ export default function HomePage() {
               </li>
             ))}
           </ol>
+          <AdaptationLoop className="mt-6" />
         </Container>
       </section>
 

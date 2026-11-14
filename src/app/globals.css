@@ -1,26 +1,164 @@
 @import "tailwindcss";
 
+/*
+ * PIVOTREADY design tokens.
+ * Palette families: confident violet (brand), midnight navy surfaces,
+ * lavender/periwinkle accents, mint reserved for positive outcomes.
+ */
+@theme {
+  --color-brand: #5b42dc;
+  --color-brand-deep: #4f31ba;
+  --color-periwinkle: #7f8cff;
+  --color-bg: #09081b;
+  --color-bg-2: #0e0d24;
+  --color-card: #15142c;
+  --color-card-hover: #201b3d;
+  --color-line: #2b2852;
+  --color-line-strong: #3d3970;
+  --color-lavender: #a79bff;
+  --color-soft: #d9d5ff;
+  --color-mint: #bff3de;
+  --color-mint-strong: #6fe0b4;
+  --color-amber: #ffd59a;
+  --color-coral: #ffaaa5;
+  --color-ink: #faf9ff;
+  --color-muted: #a9a8c2;
+  --color-faint: #77769a;
+
+  --font-sans: var(--font-manrope), ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-space-grotesk), var(--font-manrope), ui-sans-serif, system-ui, sans-serif;
+
+  --radius-card: 20px;
+  --shadow-glow: 0 0 0 1px rgb(167 155 255 / 0.12), 0 20px 60px -20px rgb(91 66 220 / 0.45);
+}
+
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  color-scheme: dark;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html {
+  background: var(--color-bg);
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--color-bg);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+}
+
+::selection {
+  background: rgb(167 155 255 / 0.35);
+}
+
+/* Visible, consistent keyboard focus everywhere. */
+:focus-visible {
+  outline: 2px solid var(--color-lavender);
+  outline-offset: 3px;
+  border-radius: 10px;
+}
+
+.bg-cta {
+  background-image: linear-gradient(100deg, #5b42dc 0%, #6d55f0 45%, #8b93ff 100%);
+}
+
+.text-gradient {
+  background-image: linear-gradient(95deg, #d9d5ff 0%, #a79bff 45%, #8b93ff 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.surface {
+  background: linear-gradient(180deg, rgb(32 27 61 / 0.55), rgb(21 20 44 / 0.85));
+  border: 1px solid var(--color-line);
+  backdrop-filter: blur(6px);
+}
+
+/* Angled geometric bands used behind hero sections (original motif). */
+.angled-bands {
+  background-image:
+    linear-gradient(115deg, transparent 0 38%, rgb(91 66 220 / 0.22) 38% 52%, transparent 52% 100%),
+    linear-gradient(65deg, transparent 0 58%, rgb(79 49 186 / 0.25) 58% 70%, transparent 70% 100%),
+    radial-gradient(60% 60% at 70% 20%, rgb(127 140 255 / 0.18), transparent 70%);
+}
+
+.grid-dots {
+  background-image: radial-gradient(rgb(167 155 255 / 0.12) 1px, transparent 1px);
+  background-size: 22px 22px;
+}
+
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-rise {
+  animation: rise 0.45s ease-out both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Print: used by the Blueprint report (/report → "Save as PDF"). */
+@media print {
+  html,
+  body {
+    background: #fff !important;
+    color: #111 !important;
+  }
+  .no-print {
+    display: none !important;
+  }
+  .print-plain,
+  .print-plain * {
+    background: transparent !important;
+    color: #111 !important;
+    border-color: #ccc !important;
+    box-shadow: none !important;
+    -webkit-text-fill-color: #111 !important;
+  }
+}
+
+/* Form inputs */
+.input {
+  width: 100%;
+  height: 2.75rem;
+  border-radius: 0.875rem;
+  border: 1px solid var(--color-line-strong);
+  background: rgb(0 0 0 / 0.25);
+  padding: 0 0.875rem;
+  color: var(--color-ink);
+  font-size: 15px;
+}
+.input::placeholder {
+  color: var(--color-faint);
+}
+.input:focus {
+  outline: none;
+  border-color: var(--color-lavender);
+  box-shadow: 0 0 0 3px rgb(167 155 255 / 0.2);
+}
+.input[aria-invalid="true"] {
+  border-color: var(--color-coral);
+}
+textarea.input {
+  height: auto;
+  min-height: 7rem;
+  padding: 0.75rem 0.875rem;
+  line-height: 1.5;
 }

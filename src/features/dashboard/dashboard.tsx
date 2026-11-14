@@ -279,8 +279,8 @@ function PlanDashboard({ state, results }: { state: AppState; results: NonNullab
               <thead className="text-left text-xs text-faint">
                 <tr>
                   <th className="pb-2 font-semibold">Skill</th>
-                  <th className="pb-2 font-semibold">Self-rated</th>
-                  <th className="pb-2 font-semibold">Demonstrated</th>
+                  <th className="pb-2 font-semibold">Self</th>
+                  <th className="pb-2 font-semibold">Measured</th>
                   <th className="pb-2 font-semibold">Needed</th>
                 </tr>
               </thead>

@@ -1,36 +1,91 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# PIVOTREADY
 
-## Getting Started
+**Your career has options. Build them before you need them.**
 
-First, run the development server:
+PIVOTREADY is a B2C web app (Skills track) for US working adults aged 25–45, starting with customer support professionals. It shows
+which of your **actual daily tasks** are shifting as AI and self-service spread, compares **three career paths** (Adapt, Pivot,
+Reinvent) computed from your answers, and lets you **prove progress** on a realistic work simulation: baseline → micro-lesson →
+a new, analogous task you solve on your own, with an honest before/after score.
+
+No signup. Guest progress is saved in your browser.
+
+## What works today
+
+| Area | What's implemented |
+| --- | --- |
+| Landing `/` | Hero, live path preview computed by the engine, "Try a sample journey" (loads a fictional preset through the same engine), reviewer quick-start |
+| Assessment `/assessment` | 7-step form: role (seeded or custom), experience, real daily tasks + up to 3 free-text tasks, concern, self-rated skills, goal, weekly time, optional budget/income preference. Zod validation, inline errors, autosaved draft |
+| Career map `/results` | Task Transformation Map, skills shown as self-reported vs. task-inferred vs. demonstrated, three paths with fit, overlap, effort, week range, gaps, uncertainty and an itemized "Why this score?" |
+| Roadmap `/path/[adapt\|pivot\|reinvent]` | Personal 14-day plan generated from weighted gaps + weekly time; switching paths changes gaps and modules; module steps, notes, completion; Blueprint/Plus locks; week 2 time-gated |
+| Flagship challenge `/challenge/cs-portfolio` | Customer Support → Customer Success: prioritize a 5-account portfolio, cite evidence, diagnose risk, choose an action, write the message → rubric score → 3-minute lesson + quick check → different portfolio → before/after comparison → Career Proof |
+| Other exercises | `/challenge/ai-draft-review` (Adapt), `/challenge/ops-volume` (Reinvent) single scored skill checks; `/challenge/cs-sprint` week-2 Skill Sprint (Plus) |
+| Dashboard `/dashboard` | Weekly mission, "Continue my plan", before/after results, Skills Snapshot, next skill, labeled **Demo: advance to next week**, local activity log, **Reset my demo data** |
+| Pricing `/pricing` | Free $0 · Blueprint $24.99 one-time · Plus $9.99/month (price hypotheses). Inline paywalls. Labeled **Preview full program (judge demo)**. No payment provider is connected, so there is no fake checkout |
+| Report `/report` | Blueprint summary, printable / Save as PDF |
+| Method `/method` | Formulas, rubric, provenance, data handling, limitations |
+
+## Run locally
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm install
+npm run dev        # http://localhost:3000
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Checks:
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```bash
+npm run typecheck  # tsc --noEmit
+npm run lint       # eslint
+npm test           # vitest: scoring, path recommendation, plan generation, storage migration
+npm run build      # production build
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Node 20+ (developed on Node 22). **No environment variables are required** (see `.env.example`).
 
-## Learn More
+## How it's built
 
-To learn more about Next.js, take a look at the following resources:
+- Next.js 16 (App Router) · React 19 · TypeScript · Tailwind CSS 4 · Zod · lucide-react · Vitest
+- No backend and no database: every route is statically prerendered, and personal state lives in versioned `localStorage`.
+- Explainable rule-based engine in `src/lib/engine` with curated seed data in `src/lib/data`. No LLM, no paid API.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+See [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md) for architecture, scoring, storage choice and limitations.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+```
+src/
+  app/                 routes (thin server pages that render client features)
+  components/          UI primitives, brand, header/footer
+  features/            assessment, careers (results/roadmap/report), challenges, dashboard, billing, landing
+  lib/data/            curated catalog: skills, tasks, roles, paths, modules, scenarios, lesson, sources, sample preset
+  lib/engine/          profile, paths, plan, portfolio scoring, exercise scoring, custom-task mapping
+  lib/storage/         versioned schema + migration, store (useSyncExternalStore), actions, derived results
+tests/                 unit tests
+```
 
-## Deploy on Vercel
+## Honest limitations
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+- Curated coverage: the deep role is Customer Support → Customer Success. Custom roles get **general preliminary guidance** driven only by selected tasks.
+- Skills are **self-reported** until you complete an exercise; demonstrated evidence is shown separately.
+- Task categories and path fit are **editorial / formula-based planning aids**, not layoff predictions, hiring probabilities or validated assessments.
+- No salary or job-growth numbers are shown: none could be verified against a dated source in this build, so they are omitted.
+- The message check in the challenge is a **documented keyword heuristic**, not deep language understanding.
+- Exercises are training, **not** accredited certificates or employment qualifications.
+- Guest data lives on one device/browser. No cross-device sync, no accounts, no server analytics (events are local only).
+- Payments: no checkout is connected. The judge demo preview unlocks paid content on the device and is labeled everywhere.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Reviewer quick path (~5 minutes)
+
+1. Open the site → **Try a sample journey** (or answer with your own inputs).
+2. Choose **Pivot** → **Start** the flagship challenge → baseline → lesson → new portfolio → compare.
+3. Redo with different answers: scores change.
+4. **My plan** → **Demo: advance to next week** to see the weekly return loop.
+5. **Pricing** → **Preview full program (judge demo)** → Skill Sprint and Blueprint report unlock.
+
+## Browser walkthrough (optional)
+
+`scripts/e2e-journey.cjs` drives the full journey with Playwright (sample + custom inputs, challenge before/after, retry with
+different answers, refresh persistence, paywall, demo week advance, demo preview, mobile overflow checks, reset):
+
+```bash
+npm run build && npm start
+BASE=http://localhost:3000 node scripts/e2e-journey.cjs
+```

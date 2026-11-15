@@ -1,5 +1,5 @@
 /**
- * Provenance shown in the product. PIVOTREADY does not display any salary,
+ * Provenance shown in the product. shifto does not display any salary,
  * employment-growth or automation-probability figures: we could not verify
  * them against a dated source inside this build, so they are omitted rather
  * than estimated.
@@ -9,7 +9,7 @@ export const CATALOG_DATE = "2026-11-14";
 
 export const PROVENANCE = {
   catalog: {
-    label: "PIVOTREADY curated catalog",
+    label: "shifto curated catalog",
     version: CATALOG_VERSION,
     asOf: CATALOG_DATE,
     description:

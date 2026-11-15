@@ -2,7 +2,7 @@
 
 ## Overview
 
-PIVOTREADY is a single Next.js application with **no backend and no database**. Every route is statically prerendered;
+shifto is a single Next.js application with **no backend and no database**. Every route is statically prerendered;
 each page is a thin server component that renders a client feature. All personal state lives in the visitor's browser.
 
 ```

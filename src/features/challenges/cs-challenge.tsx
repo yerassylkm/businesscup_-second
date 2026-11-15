@@ -463,7 +463,7 @@ function Comparison({
             <p className="font-display text-xl font-bold">Week 2 Skill Sprint: a third, harder portfolio</p>
             <p className="mt-1 text-sm text-muted">
               {!sprintAccess
-                ? "Part of PIVOTREADY Plus ($9.99/month)."
+                ? "Part of shifto Plus ($9.99/month)."
                 : week >= 2
                   ? "Open now."
                   : unlockAt

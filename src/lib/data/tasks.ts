@@ -3,7 +3,7 @@ import type { TaskCategory, TaskDef } from "@/types";
 /**
  * Curated daily tasks for customer-facing support work (v1, Nov 2026).
  *
- * The category of each task is PIVOTREADY's editorial judgment of how the task
+ * The category of each task is shifto's editorial judgment of how the task
  * tends to change as AI tools and self-service spread:
  *   - automation_exposed: repetitive, rules-based, increasingly handled by
  *     self-service, routing rules or AI agents.

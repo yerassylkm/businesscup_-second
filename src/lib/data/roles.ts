@@ -7,7 +7,7 @@ import type { RoleDef } from "@/types";
  *   level      — the 0–4 level a solid entry-to-mid practitioner applies weekly.
  *   importance — 3 = core (the role fails without it), 2 = important,
  *                1 = nice to have.
- * These are PIVOTREADY editorial profiles written for planning, not an
+ * These are shifto editorial profiles written for planning, not an
  * official occupational standard. They are intentionally kept small so the
  * matching math stays explainable.
  */

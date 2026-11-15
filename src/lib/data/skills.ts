@@ -2,7 +2,7 @@ import type { Skill, SkillId } from "@/types";
 
 /**
  * Curated skill catalog (v1, Nov 2026).
- * `hoursPerLevel` is a PIVOTREADY planning estimate used to size roadmaps.
+ * `hoursPerLevel` is a shifto planning estimate used to size roadmaps.
  * It is editorial, not a validated learning-science figure.
  */
 export const SKILLS: Skill[] = [

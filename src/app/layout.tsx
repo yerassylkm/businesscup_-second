@@ -9,12 +9,12 @@ const spaceGrotesk = Space_Grotesk({ variable: "--font-space-grotesk", subsets: 
 
 export const metadata: Metadata = {
   title: {
-    default: "PIVOTREADY: Your career has options. Build them before you need them.",
-    template: "%s · PIVOTREADY",
+    default: "shifto: Work is shifting. So can you.",
+    template: "%s · shifto",
   },
   description:
     "See how your actual job tasks are changing, compare three realistic career paths, and prove progress with short, realistic work simulations. Free career check, no signup.",
-  applicationName: "PIVOTREADY",
+  applicationName: "shifto",
 };
 
 export const viewport: Viewport = {

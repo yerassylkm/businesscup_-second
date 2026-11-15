@@ -1,5 +1,5 @@
 /**
- * Shared domain types for PIVOTREADY.
+ * Shared domain types for shifto.
  *
  * Skill levels use a 0–4 scale everywhere:
  *   0 = not yet, 1 = basic, 2 = working, 3 = strong, 4 = expert.

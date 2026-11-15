@@ -189,7 +189,7 @@ export const SCENARIO_TRANSFER: PortfolioScenario = {
   ],
 };
 
-/** Week-2 Skill Sprint (PIVOTREADY Plus content). */
+/** Week-2 Skill Sprint (shifto Plus content). */
 export const SCENARIO_SPRINT: PortfolioScenario = {
   id: "cs-c",
   title: "Skill Sprint: Ledgerly accounts",

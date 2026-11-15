@@ -3,6 +3,7 @@
 import { useSyncExternalStore } from "react";
 import {
   CURRENT_VERSION,
+  LEGACY_STORAGE_KEYS,
   MAX_EVENTS,
   STORAGE_KEY,
   defaultState,
@@ -28,13 +29,29 @@ let recoveredFromCorruption = false;
 
 function readFromStorage(): AppState {
   try {
-    const { state: loaded, reset } = deserializeState(window.localStorage.getItem(STORAGE_KEY));
+    const { state: loaded, reset } = deserializeState(readRaw());
     recoveredFromCorruption = reset;
     return loaded;
   } catch {
     storageMode = "memory";
     return defaultState();
   }
+}
+
+/** Current key, falling back to (and moving) data saved under a legacy key. */
+function readRaw(): string | null {
+  const ls = window.localStorage;
+  const current = ls.getItem(STORAGE_KEY);
+  if (current !== null) return current;
+  for (const key of LEGACY_STORAGE_KEYS) {
+    const legacy = ls.getItem(key);
+    if (legacy !== null) {
+      ls.setItem(STORAGE_KEY, legacy);
+      ls.removeItem(key);
+      return legacy;
+    }
+  }
+  return null;
 }
 
 function persist() {
@@ -94,6 +111,7 @@ export function resetAll() {
   state = defaultState();
   try {
     window.localStorage.removeItem(STORAGE_KEY);
+    for (const key of LEGACY_STORAGE_KEYS) window.localStorage.removeItem(key);
   } catch {
     /* ignore */
   }

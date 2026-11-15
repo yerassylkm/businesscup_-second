@@ -1,8 +1,8 @@
-# PIVOTREADY
+# shifto
 
-**Your career has options. Build them before you need them.**
+**Work is shifting. So can you.**
 
-PIVOTREADY is a B2C web app (Skills track) for US working adults aged 25–45, starting with customer support professionals. It shows
+shifto is a B2C web app (Skills track) for US working adults aged 25–45, starting with customer support professionals. It shows
 which of your **actual daily tasks** are shifting as AI and self-service spread, compares **three career paths** (Adapt, Pivot,
 Reinvent) computed from your answers, and lets you **prove progress** on a realistic work simulation: baseline → micro-lesson →
 a new, analogous task you solve on your own, with an honest before/after score.

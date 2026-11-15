@@ -25,7 +25,7 @@ function latest(attempts: ChallengeAttempt[], stage: "baseline" | "transfer") {
 /** Neutral, plain-text summary for sharing. No claims beyond the scores. */
 export function careerProofShareText(before: number, beforeAt: number, after: number, afterAt: number, skills: SkillId[]) {
   return [
-    "PIVOTREADY Career Proof: Customer Support → Customer Success practice challenge",
+    "shifto Career Proof: Customer Support → Customer Success practice challenge",
     `Before: ${before}/100 (${formatDate(beforeAt)}). After, on a new portfolio I hadn't seen: ${after}/100 (${formatDate(afterAt)}).`,
     `Skills practiced: ${skills.map((s) => SKILL_BY_ID[s].name).join(", ")}.`,
     "This was a training exercise, not a certificate or an employment qualification.",

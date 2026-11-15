@@ -27,7 +27,7 @@ export default function MethodPage() {
         as="h1"
         eyebrow="How it works"
         title="Method, data and limitations"
-        description="PIVOTREADY runs on an explainable rule-based engine and a curated catalog. No paid AI is required, and no result is pre-written. Here is exactly how the numbers are made."
+        description="shifto runs on an explainable rule-based engine and a curated catalog. No paid AI is required, and no result is pre-written. Here is exactly how the numbers are made."
       />
 
       <div className="mt-10 space-y-6">
@@ -138,7 +138,7 @@ export default function MethodPage() {
           <p className="mt-3 text-sm leading-relaxed text-muted">
             Signals are <strong className="text-ink">editorial statements</strong> written for catalog {RADAR_VERSION} (as of{" "}
             {RADAR_AS_OF}). They contain no statistics, percentages, salaries or forecasts, are not live labor-market data, and are not a
-            job-loss forecast. Free users see one signal for their path; PIVOTREADY Plus shows all of them and gets them as the catalog is
+            job-loss forecast. Free users see one signal for their path; shifto Plus shows all of them and gets them as the catalog is
             updated.
           </p>
         </Card>

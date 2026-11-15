@@ -169,7 +169,7 @@ async function fillPortfolio(page, { account, signals, risk, action, message }) 
 
   // Sprint is paywalled
   await page.goto(BASE + "/challenge/cs-sprint");
-  await page.getByText("Included in PIVOTREADY Plus").waitFor();
+  await page.getByText("Included in shifto Plus").waitFor();
   log("sprint paywalled for free user");
 
   // Dashboard + return loop
@@ -178,7 +178,7 @@ async function fillPortfolio(page, { account, signals, risk, action, message }) 
   await page.locator("#radar").waitFor();
   const freeCards = await page.locator("#radar h3").count();
   if (freeCards !== 1) errors.push(`radar free tier should show 1 signal, got ${freeCards}`);
-  await page.locator("#radar").getByText("Included in PIVOTREADY Plus").waitFor();
+  await page.locator("#radar").getByText("Included in shifto Plus").waitFor();
   await page.locator("#radar").getByText(/Editorial, not live labor-market data, not a job-loss forecast/).waitFor();
   const measured = await page.locator("tr", { hasText: "Customer health analysis" }).last().locator("td").nth(2).innerText();
   if (!/\d(\.\d)?\/4/.test(measured)) errors.push(`dashboard Measured column empty after challenge: "${measured}"`);
@@ -325,7 +325,7 @@ async function fillPortfolio(page, { account, signals, risk, action, message }) 
   await mp.getByRole("button", { name: /Reset my demo data/ }).click();
   await mp.getByRole("button", { name: "Yes, reset" }).click();
   await mp.getByText("Your plan starts with a free career check").waitFor();
-  const stored = await mp.evaluate(() => JSON.parse(localStorage.getItem("pivotready:state") || "{}"));
+  const stored = await mp.evaluate(() => JSON.parse(localStorage.getItem("shifto:state") || "{}"));
   if (stored.assessment || (stored.attempts && stored.attempts.length) || stored.plan || stored.demoPreview)
     errors.push("reset left data behind: " + JSON.stringify(stored).slice(0, 200));
   await mp.goto(BASE + "/results");

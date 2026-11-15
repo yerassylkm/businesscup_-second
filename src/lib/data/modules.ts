@@ -100,7 +100,7 @@ export const MODULES: ModuleDef[] = [
     title: "The five health signals",
     outcome: "You can name usage, renewal timing, sponsor, sentiment and seat use as health signals.",
     steps: [
-      "Read the PIVOTREADY micro-lesson on customer health (Pivot challenge, step 2).",
+      "Read the shifto micro-lesson on customer health (Pivot challenge, step 2).",
       "Write which of the five signals your company actually tracks today.",
       "Note one signal you can see in support tickets that customer success may not.",
     ],

@@ -33,7 +33,7 @@ export const PLANS = {
     ],
   },
   plus: {
-    name: "PIVOTREADY Plus",
+    name: "shifto Plus",
     price: "$9.99",
     cadence: "per month",
     features: [

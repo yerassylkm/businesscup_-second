@@ -2,19 +2,27 @@ import { ArrowRightLeft, Compass, Layers3 } from "lucide-react";
 import type { PathId } from "@/types";
 import { cn } from "@/lib/utils";
 
-/** Original PIVOTREADY mark: an angled path that turns upward. */
+/** shifto mark: an "S" path that turns into a forward arrow (same as public/brand/shifto-mark.svg). */
 export function LogoMark({ className }: { className?: string }) {
   return (
-    <svg viewBox="0 0 32 32" className={cn("size-8", className)} aria-hidden>
+    <svg viewBox="0 0 120 120" className={cn("size-8", className)} aria-hidden>
       <defs>
-        <linearGradient id="pr-g" x1="0" y1="1" x2="1" y2="0">
-          <stop offset="0" stopColor="#5B42DC" />
-          <stop offset="1" stopColor="#8B93FF" />
+        <linearGradient id="shifto-g" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0" stopColor="#4F31BA" />
+          <stop offset="0.55" stopColor="#5B42DC" />
+          <stop offset="1" stopColor="#8F7CFF" />
         </linearGradient>
       </defs>
-      <rect width="32" height="32" rx="9" fill="url(#pr-g)" />
-      <path d="M8 22 L14 16 L18 19 L24 10" stroke="#FAF9FF" strokeWidth="3" fill="none" strokeLinecap="round" strokeLinejoin="round" />
-      <path d="M19 10 H24 V15" stroke="#BFF3DE" strokeWidth="3" fill="none" strokeLinecap="round" strokeLinejoin="round" />
+      <rect width="120" height="120" rx="30" fill="url(#shifto-g)" />
+      <path
+        d="M34 86 H68 A15 15 0 0 0 68 56 H52 A15 15 0 0 1 52 26 H80"
+        fill="none"
+        stroke="#FFFFFF"
+        strokeWidth="13"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <path d="M76 15 L90 26 L76 37" fill="none" stroke="#BFF3DE" strokeWidth="13" strokeLinecap="round" strokeLinejoin="round" />
     </svg>
   );
 }
@@ -23,8 +31,8 @@ export function Wordmark({ className }: { className?: string }) {
   return (
     <span className={cn("inline-flex items-center gap-2.5", className)}>
       <LogoMark />
-      <span className="font-display text-lg font-bold tracking-tight">
-        PIVOT<span className="text-lavender">READY</span>
+      <span className="font-sans text-[22px] font-extrabold leading-none tracking-[-0.03em]">
+        shift<span className="text-lavender">o</span>
       </span>
     </span>
   );

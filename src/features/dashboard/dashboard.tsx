@@ -147,7 +147,7 @@ function PlanDashboard({ state, results }: { state: AppState; results: NonNullab
                     {done ? <Check className="size-3.5" aria-label="Done" /> : locked ? <Lock className="size-3" aria-label="Locked" /> : <span className="text-[10px] font-bold">D{i.day}</span>}
                   </span>
                   <span className={cn("flex-1", done && "text-muted line-through decoration-faint")}>{i.title}</span>
-                  {locked && <span className="text-xs text-faint">{i.access === "plus" ? "Plus" : "Blueprint"}</span>}
+                  {locked && <span className="text-xs text-faint">{i.access === "plus" ? "Plus" : "Skill Journey"}</span>}
                 </li>
               );
             })}

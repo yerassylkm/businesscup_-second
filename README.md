@@ -16,14 +16,14 @@ No signup. Guest progress is saved in your browser.
 | Landing `/` | Hero, live path preview computed by the engine, "Try a sample journey" (loads a fictional preset through the same engine), reviewer quick-start |
 | Assessment `/assessment` | 7-step form: role (seeded or custom), experience, real daily tasks + up to 3 free-text tasks, concern, self-rated skills, goal, weekly time, optional budget/income preference. Zod validation, inline errors, autosaved draft |
 | Career map `/results` | Task Transformation Map, skills shown as self-reported vs. task-inferred vs. demonstrated, three paths with fit, overlap, effort, week range, gaps, uncertainty and an itemized "Why this score?" |
-| Roadmap `/path/[adapt\|pivot\|reinvent]` | Personal 14-day plan generated from weighted gaps + weekly time; switching paths changes gaps and modules; module steps, notes, completion; Blueprint/Plus locks; week 2 time-gated |
+| Roadmap `/path/[adapt\|pivot\|reinvent]` | Personal 14-day plan generated from weighted gaps + weekly time; switching paths changes gaps and modules; module steps, notes, completion; Skill Journey/Plus locks; week 2 time-gated |
 | Flagship challenge `/challenge/cs-portfolio` | Customer Support → Customer Success: prioritize a 5-account portfolio, cite evidence, diagnose risk, choose an action, write the message → rubric score → 3-minute lesson + quick check → different portfolio → before/after comparison → Career Proof |
 | Other exercises | `/challenge/ai-draft-review` (Adapt), `/challenge/ops-volume` (Reinvent) single scored skill checks; `/challenge/cs-sprint` week-2 Skill Sprint (Plus) |
 | Dashboard `/dashboard` | Weekly mission, "Continue my plan", **Career Radar** (curated, dated editorial signals per path, linked to your gaps and to practice; 1 free, rest Plus), before/after results, Skills Snapshot, next skill, labeled **Demo: advance to next week**, local activity log, **Reset my demo data** |
 | Loop after practice | "Your profile updated" on every result: measured skill before → after, the path gap that moved, and a deep link to the next plan session |
 | Career Proof `/proof` | Printable before/after summary (Save as PDF) + "Copy share text" (neutral, states it's not a certificate) |
-| Pricing `/pricing` | Free $0 · Blueprint $24.99 one-time · Plus $9.99/month (price hypotheses). Inline paywalls. Labeled **Preview full program (judge demo)**. No payment provider is connected, so there is no fake checkout |
-| Report `/report` | Blueprint summary, printable / Save as PDF |
+| Pricing `/pricing` | Free $0 · Skill Journey $34.99 one-time · shifto Plus $19.99/month (price hypotheses; an annual plan is a later test, not offered in the product). Inline paywalls. Labeled **Preview full program (judge demo)**. No payment provider is connected, so there is no fake checkout |
+| Report `/report` | Skill Journey summary, printable / Save as PDF |
 | Method `/method` | Formulas, rubric, provenance, data handling, limitations |
 
 ## Run locally
@@ -80,7 +80,7 @@ tests/                 unit tests
 2. Choose **Pivot** → **Start** the flagship challenge → baseline → lesson → new portfolio → compare → see **Your profile updated**.
 3. Redo with different answers: scores change.
 4. **My plan** → **Career Radar**, then **Demo: advance to next week** to see the weekly return loop.
-5. **Pricing** → **Preview full program (judge demo)** → Skill Sprint and Blueprint report unlock.
+5. **Pricing** → **Preview full program (judge demo)** → Skill Sprint, full plans, Career Radar and the Skill Journey report unlock.
 
 ## Browser walkthrough (optional)
 

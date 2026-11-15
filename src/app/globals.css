@@ -114,7 +114,7 @@ body {
   }
 }
 
-/* Print: used by the Blueprint report (/report → "Save as PDF"). */
+/* Print: used by the Skill Journey report and Career Proof (/report → "Save as PDF"). */
 @media print {
   html,
   body {

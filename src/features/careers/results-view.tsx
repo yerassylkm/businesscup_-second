@@ -17,6 +17,7 @@ import { useCareerResults, type CareerResults } from "@/lib/storage/derived";
 import { useAppState } from "@/lib/storage/store";
 import { cn, pct } from "@/lib/utils";
 import type { PathId, SkillId, TaskCategory } from "@/types";
+import { PLANS, priceLabel } from "@/features/billing/plans";
 import { NoAssessment } from "./no-assessment";
 
 const EXPERIENCE_TEXT = { lt2: "less than 2 years", "2to5": "2–5 years", "5to10": "5–10 years", "10plus": "10+ years" };
@@ -232,8 +233,14 @@ function Results({ results, selected }: { results: CareerResults; selected: Path
           <p className="font-display text-xl font-bold">Everything above is free</p>
           <p className="mt-2 text-sm leading-relaxed text-muted">
             Your task map, skills comparison, three paths and the first practice challenge on any path cost nothing. The{" "}
-            <strong className="text-ink">Career Transition Blueprint ($24.99 one-time)</strong> unlocks your full 14-day roadmap and a
-            savable report. <strong className="text-ink">Plus ($9.99/month)</strong> adds weekly Skill Sprints.
+            <strong className="text-ink">
+              {PLANS.journey.name} ({priceLabel("journey")})
+            </strong>{" "}
+            unlocks the full path for one skill: your complete 14-day plan and a savable report, yours to keep.{" "}
+            <strong className="text-ink">
+              {PLANS.plus.name} ({priceLabel("plus")})
+            </strong>{" "}
+            adds full plans on every path, weekly Skill Sprints and the complete Career Radar.
           </p>
           <ButtonLink href="/pricing" variant="outline" size="sm" className="mt-4">
             See what&apos;s included

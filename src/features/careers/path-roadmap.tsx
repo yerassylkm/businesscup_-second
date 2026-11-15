@@ -314,7 +314,7 @@ function PlanItemRow({
               {item.skill && <span>{SKILL_BY_ID[item.skill as SkillId]?.name}</span>}
               {item.access !== "free" && (
                 <Badge tone={paid ? "muted" : "lavender"} className="py-0 text-[10px]">
-                  {item.access === "plus" ? "Plus" : "Blueprint"}
+                  {item.access === "plus" ? "Plus" : "Skill Journey"}
                 </Badge>
               )}
             </p>
@@ -342,7 +342,7 @@ function PlanItemRow({
         {open && !timeLocked && (
           <div className="border-t border-line p-4">
             {paid ? (
-              <PaywallCard tier={item.access as "blueprint" | "plus"} context={`plan:${item.kind}`} />
+              <PaywallCard tier={item.access as "journey" | "plus"} context={`plan:${item.kind}`} />
             ) : (
               <div className="space-y-4">
                 <p className="text-sm text-muted">

@@ -13,6 +13,7 @@ import { useAppState } from "@/lib/storage/store";
 import { cn, formatDate, formatDateTime } from "@/lib/utils";
 import type { ChallengeAttempt, PortfolioAnswer, SkillId } from "@/types";
 import { PortfolioForm, Radio } from "./portfolio-form";
+import { PLANS, priceLabel } from "@/features/billing/plans";
 import { careerProofShareText } from "./career-proof";
 import { ProfileUpdateCard } from "./profile-update";
 import { ScoreReport } from "./score-report";
@@ -463,7 +464,7 @@ function Comparison({
             <p className="font-display text-xl font-bold">Week 2 Skill Sprint: a third, harder portfolio</p>
             <p className="mt-1 text-sm text-muted">
               {!sprintAccess
-                ? "Part of shifto Plus ($9.99/month)."
+                ? `Part of ${PLANS.plus.name} (${priceLabel("plus")}).`
                 : week >= 2
                   ? "Open now."
                   : unlockAt

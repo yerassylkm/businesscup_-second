@@ -19,7 +19,7 @@ import type { PathEvaluation } from "./paths";
  * learn → practice → apply and interleaved across skills.
  */
 
-export type PlanAccess = "free" | "blueprint" | "plus";
+export type PlanAccess = "free" | "journey" | "plus";
 
 export interface PlanItem {
   id: string;
@@ -171,7 +171,7 @@ export function generatePlan(pathId: PathId, evaluation: PathEvaluation, weeklyT
       minutes: shape.minutes,
       skill: mod.skill,
       moduleId: mod.id,
-      access: free ? "free" : "blueprint",
+      access: free ? "free" : "journey",
     });
   });
 

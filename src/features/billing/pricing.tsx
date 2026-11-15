@@ -6,7 +6,7 @@ import { Badge, Button, ButtonLink, Card, Container, Notice, SectionTitle } from
 import { setDemoPreview } from "@/lib/storage/actions";
 import { track, useAppState } from "@/lib/storage/store";
 import { cn } from "@/lib/utils";
-import { PLANS } from "./paywall";
+import { PLANS } from "./plans";
 
 export function PricingView() {
   const state = useAppState();
@@ -18,7 +18,7 @@ export function PricingView() {
 
   const tiers = [
     { id: "free", plan: PLANS.free, highlight: false },
-    { id: "blueprint", plan: PLANS.blueprint, highlight: false },
+    { id: "journey", plan: PLANS.journey, highlight: false },
     { id: "plus", plan: PLANS.plus, highlight: true },
   ] as const;
 
@@ -71,7 +71,7 @@ export function PricingView() {
                 </Button>
               ) : (
                 <Button variant={highlight ? "primary" : "secondary"} className="w-full" onClick={() => setDemoPreview(true)}>
-                  <Sparkles className="size-4" aria-hidden /> Preview {id === "plus" ? "Plus" : "Blueprint"} (judge demo)
+                  <Sparkles className="size-4 shrink-0" aria-hidden /> Preview {id === "plus" ? "Plus" : "Skill Journey"} (judge demo)
                 </Button>
               )}
             </div>
@@ -85,7 +85,7 @@ export function PricingView() {
           <p className="mt-3 font-display text-xl font-bold">Preview the full program without paying</p>
           <p className="mt-2 text-sm leading-relaxed text-muted">
             A payment provider isn&apos;t connected in this build, so there is no checkout and no card form, and nothing here can charge
-            you. The demo preview unlocks Blueprint and Plus content on this device for review. It is labeled everywhere and does
+            you. The demo preview unlocks Skill Journey and Plus content on this device for review. It is labeled everywhere and does
             not pretend a purchase happened.
           </p>
           <div className="mt-4 flex flex-wrap gap-2">
@@ -107,8 +107,8 @@ export function PricingView() {
         </Card>
         <div className="space-y-4">
           <Notice title="Why both a one-time and a monthly option?">
-            The Blueprint is for people who want one clear plan now. Plus is for people who keep practicing: it includes the Blueprint, so
-            you never pay for both.
+            Skill Journey is for one focused move: buy it once and keep the module. Plus is for ongoing growth: new programs, weekly
+            Skill Sprints, plan updates and the full Career Radar on every path, for as long as you subscribe.
           </Notice>
           <Notice title="What we won't do">
             No job guarantees, no fake urgency, no auto-enrollment. Your free career map stays free.

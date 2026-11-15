@@ -6,47 +6,13 @@ import { Button, ButtonLink } from "@/components/ui";
 import { setDemoPreview } from "@/lib/storage/actions";
 import { track } from "@/lib/storage/store";
 import { cn } from "@/lib/utils";
+import { PLANS, type PaidTier } from "./plans";
 
-export const PLANS = {
-  free: {
-    name: "Free Career Check",
-    price: "$0",
-    cadence: "",
-    features: [
-      "2-minute assessment based on your real tasks",
-      "Task Transformation Map",
-      "Three paths with skill overlap, gaps and effort",
-      "First practice challenge on every path, with before/after on Pivot",
-      "Week 1 starter session and weekly reviews",
-      "Career Radar preview: 1 signal for your path",
-    ],
-  },
-  blueprint: {
-    name: "Career Transition Blueprint",
-    price: "$24.99",
-    cadence: "one-time",
-    features: [
-      "Full personalized 14-day roadmap (every session unlocked)",
-      "Deep skill-gap map for your chosen path",
-      "Savable / printable Blueprint report (PDF via your browser)",
-      "Recommended next exercises",
-    ],
-  },
-  plus: {
-    name: "shifto Plus",
-    price: "$9.99",
-    cadence: "per month",
-    features: [
-      "Everything in the Blueprint (no separate purchase needed)",
-      "Career Radar: every curated signal for your path, linked to practice and updated with the catalog",
-      "Weekly Skill Sprints: new simulations each week",
-      "Ongoing saved progress and skill evidence",
-    ],
-  },
-} as const;
+export { PLANS };
+
 
 /** Inline paywall shown where locked content is requested. */
-export function PaywallCard({ tier, context, className }: { tier: "blueprint" | "plus"; context: string; className?: string }) {
+export function PaywallCard({ tier, context, className }: { tier: PaidTier; context: string; className?: string }) {
   useEffect(() => {
     track("paywall_viewed", { tier, context });
   }, [tier, context]);
@@ -72,7 +38,7 @@ export function PaywallCard({ tier, context, className }: { tier: "blueprint" | 
               Compare plans
             </ButtonLink>
             <Button size="sm" variant="outline" className="h-auto min-h-9 whitespace-normal py-1.5 text-left" onClick={() => setDemoPreview(true)}>
-              <Sparkles className="size-3.5" aria-hidden /> Preview full program (judge demo)
+              <Sparkles className="size-3.5 shrink-0" aria-hidden /> Preview full program (judge demo)
             </Button>
           </div>
           <p className="mt-2 text-xs text-faint">

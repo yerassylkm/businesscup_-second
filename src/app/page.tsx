@@ -4,6 +4,7 @@ import { AdaptationLoop } from "@/components/adaptation-loop";
 import { PathGlyph } from "@/components/brand";
 import { Badge, ButtonLink, Card, Container, Eyebrow, SectionTitle } from "@/components/ui";
 import { LandingCtas, PathPreview, TrustList } from "@/features/landing/landing";
+import { PLANS } from "@/features/billing/plans";
 import { PATHS } from "@/lib/data/paths";
 import { CATEGORY_META, TASKS } from "@/lib/data/tasks";
 import type { TaskCategory } from "@/types";
@@ -199,9 +200,9 @@ export default function HomePage() {
           />
           <div className="mt-10 grid gap-4 md:grid-cols-3">
             {[
-              { name: "Free Career Check", price: "$0", note: "Task map, three paths, first challenge" },
-              { name: "Career Transition Blueprint", price: "$24.99", note: "One-time: full 14-day roadmap + savable report" },
-              { name: "shifto Plus", price: "$9.99/mo", note: "Blueprint included + weekly Skill Sprints" },
+              { name: PLANS.free.name, price: PLANS.free.price, note: PLANS.free.summary },
+              { name: PLANS.journey.name, price: `${PLANS.journey.price} one-time`, note: PLANS.journey.summary },
+              { name: PLANS.plus.name, price: `${PLANS.plus.price}/mo`, note: PLANS.plus.summary },
             ].map((t) => (
               <Card key={t.name}>
                 <p className="text-sm font-semibold text-soft">{t.name}</p>

@@ -40,4 +40,11 @@ describe("storage serialization & migration", () => {
     expect(reset).toBe(true);
     expect(state.assessment).toBeNull();
   });
+
+  it("migrates plans saved with the old 'blueprint' tier name to 'journey'", () => {
+    const item = { id: "x", day: 2, week: 1, kind: "module", title: "t", outcome: "o", minutes: 30, access: "blueprint" };
+    const { state, reset } = migrateState({ version: 1, createdAt: 1, plan: { pathId: "pivot", generatedAt: 1, items: [item] } });
+    expect(reset).toBe(false);
+    expect(state.plan!.items[0].access).toBe("journey");
+  });
 });

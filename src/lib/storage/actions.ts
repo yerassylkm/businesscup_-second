@@ -104,7 +104,7 @@ export function setDemoPreview(on: boolean) {
   if (on) track("demo_plus_preview");
 }
 
-export function hasAccess(state: AppState, access: "free" | "blueprint" | "plus") {
+export function hasAccess(state: AppState, access: "free" | "journey" | "plus") {
   return access === "free" || state.demoPreview;
 }
 

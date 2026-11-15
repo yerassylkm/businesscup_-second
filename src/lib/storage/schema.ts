@@ -42,7 +42,8 @@ const planItemSchema = z.object({
   skill: z.string().optional(),
   moduleId: z.string().optional(),
   href: z.string().optional(),
-  access: z.enum(["free", "blueprint", "plus"]),
+  // "blueprint" is the pre-rename name of the one-time tier (now Skill Journey).
+  access: z.enum(["free", "blueprint", "journey", "plus"]).transform((a) => (a === "blueprint" ? "journey" : a)),
 });
 
 const attemptSchema = z.object({

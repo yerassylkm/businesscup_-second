@@ -16,21 +16,21 @@ import { useAppState } from "@/lib/storage/store";
 import { formatDate, pct } from "@/lib/utils";
 import { NoAssessment } from "./no-assessment";
 
-/** Blueprint report: a printable summary (Save as PDF from the browser). */
-export function BlueprintReport() {
+/** Skill Journey report: a printable summary (Save as PDF from the browser). */
+export function JourneyReport() {
   const state = useAppState();
   const [generatedAt] = useState(() => Date.now());
   const results = useCareerResults(state);
   if (!results) return <NoAssessment />;
-  if (!hasAccess(state, "blueprint")) {
+  if (!hasAccess(state, "journey")) {
     return (
       <Container className="py-14">
-        <h1 className="font-display text-3xl font-bold">Your Blueprint report</h1>
+        <h1 className="font-display text-3xl font-bold">Your Skill Journey report</h1>
         <p className="mt-2 max-w-2xl text-muted">
           A printable, savable summary of your career map, chosen path, skill gaps, 14-day plan and practice evidence.
         </p>
         <div className="mt-6 max-w-2xl">
-          <PaywallCard tier="blueprint" context="report" />
+          <PaywallCard tier="journey" context="report" />
         </div>
       </Container>
     );
@@ -51,7 +51,7 @@ export function BlueprintReport() {
       <article className="space-y-8 rounded-3xl border border-line bg-card p-6 sm:p-10">
         <header className="flex flex-wrap items-center justify-between gap-4 border-b border-line pb-6">
           <Wordmark />
-          <p className="text-sm text-muted">Career Transition Blueprint · {formatDate(generatedAt)}</p>
+          <p className="text-sm text-muted">Skill Journey report · {formatDate(generatedAt)}</p>
         </header>
         <section>
           <h1 className="font-display text-3xl font-bold">
